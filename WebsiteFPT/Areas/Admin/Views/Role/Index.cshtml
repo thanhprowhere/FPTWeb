@@ -1,0 +1,46 @@
+﻿
+@model PagedList.IPagedList<Models.EF.Role>
+@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "Manager Course";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    List Role
+}
+<a href="/Topic/Create">Create new topic</a>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID">
+                                <td>
+                                    @Ajax.ActionLink("Delete", "Delete", new { @id = item.ID }, new AjaxOptions
+                               {
+                                   Confirm = "Do you want delete this Course?",
+                                        OnComplete = "$('#row_" + item.ID + "').remove()",
+                                   HttpMethod = "Delete"
+                               })
+                                </td>
+                                <td>@item.Name</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    </div>
+
+</div>

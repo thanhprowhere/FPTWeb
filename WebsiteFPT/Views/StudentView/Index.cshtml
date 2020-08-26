@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Models.EF.Enrollment>
+@{
+    ViewBag.Title = "Manager Topic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    List Topic
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "StudentView", FormMethod.Get))
+            {
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                @foreach (var item in Model)
+                                {
+                                    <li id="row_@item.ID">@item.Course.Name</li>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

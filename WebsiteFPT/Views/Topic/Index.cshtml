@@ -1,0 +1,48 @@
+﻿
+@model PagedList.IPagedList<Models.EF.Topic>
+@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "Manager Topic";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header{
+    List Topic
+}
+<a href="/Topic/Create">Create new topic</a>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Topic</th>
+                            <th>Course</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID">
+                                <td>@item.Name</td>
+                                <td>@item.Course.Name</td>
+                                <td>
+                                    @Ajax.ActionLink("Delete", "Delete", new { @id = item.ID }, new AjaxOptions
+                               {
+                                   Confirm = "Do you want delete this Topic?",
+                                        OnComplete = "$('#row_" + item.ID + "').remove()",
+                                   HttpMethod = "Delete"
+                               })
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+        </div>
+    </div>
+
+</div>

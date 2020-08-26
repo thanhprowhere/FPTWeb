@@ -1,0 +1,61 @@
+﻿@model PagedList.IPagedList<Models.EF.Course>
+@using PagedList.Mvc
+@using PagedList
+@{
+    ViewBag.Title = "ManagerCourse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<a href="/Course/Create">Create new course</a>
+@section header{
+    List Course
+}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "Course", FormMethod.Get))
+            {
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="col-md-4">
+                            <input type="text" value="@ViewBag.SearchString" name="searchString" />
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit">Search</button>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>course</th>
+                            <th>CourseCategory</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID">
+                                <td>
+                                    @Ajax.ActionLink("Delete", "Delete", new { @id = item.ID }, new AjaxOptions
+                                    {
+                                    Confirm = "Do you want delete this Course?",
+                                    OnComplete = "$('#row_" + item.ID + "').remove()",
+                                    HttpMethod = "Delete"
+                                    })
+                                </td>
+                                <td>@item.Name</td>
+                                <td>@item.CourseCategory.Name</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page, @ViewBag.SearchString }))
+            </div>
+        </div>
+    </div>
+
+</div>
